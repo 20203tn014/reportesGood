@@ -31,7 +31,7 @@ const submitSigninForm = async (event) => {
         changeView(payload.roles[0].role);
       }
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response);
       toastMessage('Credenciales incorrectas').showToast();
     }
   }
