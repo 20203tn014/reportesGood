@@ -16,7 +16,7 @@ if (navigator.serviceWorker) {
 
 const isOnline = () => {
   if (navigator.onLine) {
-    toastMessage("Conectado").showToast();
+    toastMessage("En línea").showToast();
   } else {
     toastMessage("Offline").showToast();
   }
