@@ -124,19 +124,12 @@
               <table class="table" id="incidencesTable">
                 <thead>
                   <th scope="col">#</th>
-                  <th scope="col">Usuario</th>
-                  <th scope="col">Area</th>
+                  <th scope="col">Autor</th>
+                  <th scope="col">Área</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Acciones</th>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                <tbody id="incidencesBody">
                 </tbody>
               </table>
             </div>
@@ -166,7 +159,9 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary">
+            Save changes
+          </button>
         </div>
       </div>
     </div>
@@ -183,50 +178,6 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
-
-  <script>
-    // Función para hacer la solicitud a la API
-    async function fetchIncidences() {
-      try {
-        const response = await axios.get(
-          "http://206.189.234.55:3001/api/incidences/pending/2"
-        );
-        return response.data;
-      } catch (error) {
-        console.error("Error al obtener los datos de la API:", error);
-        return [];
-      }
-    }
-
-    // Función para llenar la tabla con los datos
-    async function fillTable() {
-      const response = await fetchIncidences();
-      const incidences = response.incidences; // Acceder al arreglo de incidencias
-
-      const tableBody = document.querySelector("#incidencesTable tbody");
-
-      incidences.forEach((incidence, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-      <th scope="row">${index + 1}</th>
-      <td>${incidence.person.name} ${incidence.person.surname}</td>
-      <td>${incidence.user.area.name}</td>
-      <td>${incidence.incidenceDate}</td>
-      <td>
-        <button type="button" class="btn btn-warning btn-edit" data-index="${index}">
-          <i class="bi bi-pencil-square"></i>
-        </button>
-        <button type="button" class="btn btn-danger btn-delete" data-index="${index}">
-          <i class="bi bi-trash"></i>
-        </button>
-      </td>
-    `;
-        tableBody.appendChild(row);
-      });
-    }
-    window.onload = fillTable;
-  </script>
-
   <script src="/assets/js/jquery-3.7.1.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -235,6 +186,7 @@
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/axios/axios-intance.js"></script>
   <script src="/assets/js/toast/toasts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pouchdb@8.0.1/dist/pouchdb.min.js"></script>
   <script src="/assets/js/admin/admin.home.controller.js"></script>
 </body>
 
