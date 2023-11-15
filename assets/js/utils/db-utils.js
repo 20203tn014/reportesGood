@@ -39,10 +39,15 @@ const savePostIncidence = () => {
             )
             const data = await response.json();
             if (data['changed']) {
-                incidences.push(data);
-                return incidencesDB.remove(doc);
+                incidences.push(incidencesDB.remove(doc));
+                //return incidencesDB.remove(doc);
             }
         }
-        return Promise.all(...incidences. getAllIcidencesPending());
+        const message = self.clients.matchAll().then((clients)=>{
+            clients.forEach((client) => {
+                client.postMessage({type: 'RELOAD_PAGE_AFTER_SYNC'});
+            });
+        });
+        return Promise.all([...incidences. getAllIcidencesPending, message]);
     });
 }

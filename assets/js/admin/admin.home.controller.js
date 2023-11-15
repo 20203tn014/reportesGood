@@ -24,7 +24,7 @@ const aceptIncidence = async (id) => {
     toastMessage('Error al cambiar el estado').showToast();
   }
 }
-const rejectIncdence = async (id) => {
+const rejectIncidence = async (id) => {
   try {
     const response = await axiosClient.post('/incidences/status', {
       id,
@@ -52,28 +52,27 @@ const getAllIncidencesPending = async () => {
     const { rows } = await incidencesDB.allDocs({ include_docs: true });
     for (const [i, incidence] of response?.incidences.entries()) {
       var dateTemp = new Date(incidence.incidenceDate);
-      const day = String(dateTemp.getDate()).padStart(2,'0');
-      const month = String(dateTemp.getMonth() + 1).padStart(2,'0');
+      const day = String(dateTemp.getDate()).padStart(2, '0');
+      const month = String(dateTemp.getMonth() + 1).padStart(2, '0');
       const year = String(dateTemp.getFullYear());
       content += `
       <tr>
-        <td>${i+1}</td>
+        <td>${i + 1}</td>
         <td>${incidence.person.name} ${incidence.person.surname} ${incidence.person.lastname ?? ''}</td>
         <td>${incidence.user.area.name}</td>
         <td>${day}/${month}/${year}</td>
         <td>
-            ${
-              rows.find(row=>row.doc.id === incidence.id)
-              ?
-              ` <button class="btn btn-success btn-sm" disabled><i class="bi bi-file-earmark-text"></i> ACEPTAR</button>
+            ${rows.find(row => row.doc.id === incidence.id)
+          ?
+          ` <button class="btn btn-success btn-sm" disabled><i class="bi bi-file-earmark-text"></i> ACEPTAR</button>
                 <button class="btn btn-danger btn-sm" disabled><i class="bi bi-trash3"></i> RECHAZAR</button>
               `
-              :
+          :
+          `
+              <button class="btn btn-success btn-sm" onclick='aceptIncidence(${incidence.id})'><i class="bi bi-file-earmark-text"></i>ACEPTAR</button>
+              <button class="btn btn-danger btn-sm" onclick='rejectIncidence(${incidence.id})'><i class="bi bi-trash3"></i>RECHAZAR</button
               `
-              <button class="btn btn-success btn-sm" onlick='aceptIncidence(${incidence.id})'><i class="bi bi-file-earmark-text"></i>ACEPTAR</button>
-              <button class="btn btn-danger btn-sm" onlick='rejectIncidence(${incidence.id})'><i class="bi bi-trash3"></i>RECHAZAR</button
-              `
-            }
+        }
         </td>
       </tr>
       `;
@@ -97,4 +96,8 @@ $(document).ready(function () {
   $('#fullname2').text(fullname);
   $('#role').text(role);
   getAllIncidencesPending();
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'RELOAD_PAGE_AFTER_SYNC')
+      window.location.reload(true);
+  });
 });
