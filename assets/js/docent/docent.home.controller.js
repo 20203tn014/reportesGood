@@ -63,27 +63,33 @@ const takeAPhoto = () => {
     camera.powerOff();
 }
 
-// Registrar incidencia
-
-// /incidences/save -> endpoint
-
-/*
-    {
-        title,
-        description,
-        type,
-        status,
-        incidenceDate // yyyy-MM-dd hh:mm:ss
-        annexes:[
-            {
-                name:"",
-                mimeType: "png",
-                file: ""
+// Registrar una incidencia
+const createIncidence = async () => {
+    try {
+        const user = parseJWT();
+        payload.userId = user.areas[0].id; // ID (token)
+        
+        // Petición POST
+        const response = await axiosClient.post('/incidences/save', payload);
+        console.log('Incidencia creada correctamente:', response.data);
+        
+        // Limpiar el payload
+        payload = {
+            tittle: '',
+            type: '',
+            description: '',
+            incidenceDate: '',
+            status: { id: 4 },
+            annexes: [],
+            location: {
+                lat: 0,
+                lng: 0,
             }
-        ],
-        location
+        };
+    } catch (error) {
+        console.error('Error al crear la incidencia:', error);
     }
-*/
+};
 
 const getAllIncidencesByEmployee = async () => {
     try {
